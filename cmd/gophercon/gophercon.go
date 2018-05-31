@@ -4,11 +4,15 @@ import "net/http"
 import "fmt"
 import "log"
 
+import "github.com/gorilla/mux"
+
 func main() {
 	log.Printf("Service starting ...")
 
-	http.HandleFunc("/home", homeHandler())
-	http.ListenAndServe(":8000", nil)
+	r := mux.NewRouter()
+	r.HandleFunc("/home", homeHandler()).Methods(http.MethodGet)
+
+	http.ListenAndServe(":8000", r)
 }
 
 func homeHandler() func(w http.ResponseWriter, r *http.Request) {
