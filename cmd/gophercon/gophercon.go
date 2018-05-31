@@ -1,10 +1,10 @@
 package main
 
 import "log"
-import "net/http"
 import "os"
 
 import "github.com/hinrikg/gophercon/pkg/routing"
+import "github.com/hinrikg/gophercon/pkg/webserver"
 
 func main() {
 	log.Printf("Service starting ...")
@@ -15,5 +15,6 @@ func main() {
 	}
 
 	router := routing.CreateRouter()
-	log.Fatal(http.ListenAndServe(":"+port, router))
+	server := webserver.New("", port, router)
+	log.Fatal(server.Start())
 }
