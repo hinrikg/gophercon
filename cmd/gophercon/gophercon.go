@@ -18,7 +18,18 @@ func main() {
 		log.Fatal("Service port was not set!")
 	}
 
+	internalPort := os.Getenv("INTERNAL_PORT")
+	if len(internalPort) == 0 {
+		log.Fatal("Internal port was not set!")
+	}
+
 	router := routing.CreateRouter()
 	server := webserver.New("", port, router)
-	log.Fatal(server.Start())
+	go func() {
+		log.Fatal(server.Start())
+	}()
+
+	internalRouter := routing.CreateDiagnosticsRouter()
+	internalServer := webserver.New("", internalPort, internalRouter)
+	log.Fatal(internalServer.Start())
 }
