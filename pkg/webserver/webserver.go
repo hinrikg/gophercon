@@ -1,5 +1,6 @@
 package webserver
 
+import "context"
 import "net"
 import "net/http"
 
@@ -18,4 +19,8 @@ func New(host, port string, handler http.Handler) *WebServer {
 
 func (server *WebServer) Start() error {
 	return server.ListenAndServe()
+}
+
+func (server *WebServer) Stop() error {
+	return server.Shutdown(context.Background())
 }
